@@ -57,6 +57,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="FSharp.Data">
+      <HintPath>..\..\libs\FSharp.Data.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="FSharp.Data.DesignTime">
       <HintPath>C:\code\SDKv2\net\libs\FSharp.Data.DesignTime.dll</HintPath>
     </Reference>
