@@ -50,3 +50,20 @@ let parseUserToken value =
         KidoUser user
     with | :?System.Exception as ex ->
         Fail ex
+
+        
+type EApiServiceResult =
+    | EApiResponse of EApiResponse
+    | ServiceFail of System.Exception 
+
+let internal parseServiceResponse response =
+    try
+        let value = JsonValue.Parse response 
+        let r = {
+            Status = value?data?status.AsInteger();
+            Body = value?data?body;
+        }
+        EApiResponse r
+    with | :?System.Exception as ex ->
+        ServiceFail ex
+

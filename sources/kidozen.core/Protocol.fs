@@ -73,12 +73,6 @@ type EApiResponse =  {
     Body : JsonValue
 }
 
-let internal parseServiceResponse value = 
-    {
-        Status = value?data?status.AsInteger();
-        Body = value?data?body;
-    }
-
 type EapiRequest = {
     User : KidoUser
     Name : string
@@ -105,5 +99,6 @@ let andOptions options request = {
     request with Options = Some (options)
 }
 
-let invokeEApi fnServiceInvoke request =
-    fnServiceInvoke request |> JsonValue.Parse |> parseServiceResponse
+let invokeEApi fnServiceInvoke request = async {
+    return fnServiceInvoke request 
+ }

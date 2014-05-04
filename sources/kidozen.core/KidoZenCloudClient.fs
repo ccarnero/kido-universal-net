@@ -73,4 +73,6 @@ let callService (apiRequest:EapiRequest) =
     createRequest Post url 
         |> withHeader (Authorization apiRequest.User.Token) 
         |> withBody apiRequest.Body.Value
-        |> getResponseBody 
+        |> getResponseBody  |> parseServiceResponse
+
+    

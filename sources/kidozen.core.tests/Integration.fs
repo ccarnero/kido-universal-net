@@ -84,10 +84,13 @@ let [<Test>] `` should invoke service with user and application`` () =
             let user = t |> parseUserToken
             match user with
             | KidoUser u ->
-            let apiRequest = createEapiRequest a u "Google" "get" |> withJsonBody "{\"path\":\"?k=kidozen\"}"
-            let invokeGoogleService =  invokeEApi callService  
-            let apiResponse = invokeGoogleService apiRequest
-            Assert.AreEqual(200,apiResponse.Status);
+                let apiRequest = createEapiRequest a u "Google" "get" |> withJsonBody "{\"path\":\"?k=kidozen\"}"
+                let invokeGoogleService =  invokeEApi callService 
+                let apiResponse = invokeGoogleService apiRequest |> Async.RunSynchronously
+                match apiResponse with
+                | EApiResponse r ->
+                    Assert.AreEqual(200,r.Status);
+                | ServiceFail f-> Assert.Fail()
             | Fail f-> Assert.Fail()
             | _ -> Assert.Fail()
         | _ -> Assert.Fail()
