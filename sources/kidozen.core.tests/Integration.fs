@@ -7,7 +7,8 @@ open System.Web
 open System.Web.Http 
 open System.Net
 open KidoZenTypesParser
-open  System.Collections.Generic
+open System.Collections.Generic
+open TestValues
 
 let [<Test>] ``should parse configuration as Application`` () = 
     ServicePointManager.ServerCertificateValidationCallback  <- (fun _ _ _ _  -> true);

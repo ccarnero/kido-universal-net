@@ -1,14 +1,13 @@
 ﻿module MockTests
 
 open NUnit.Framework
-open KidoZen
-
+open KidoZenCloudClient
+open KidoZenTypesParser
+open Protocol
+open TestValues
 open Microsoft.Owin.Testing
 open Owin
-open System.Web
-open System.Web.Http 
-
-open UnitTests  
+open UnitTests
 
 open  System.Collections.Generic
 
@@ -28,14 +27,17 @@ let owinServiceMock expectedContent (expectedBody:string) =
 let [<Test>] ``should parse configuration as Application`` () = 
     //mock
     let mockedconfig appcenter appname =
-        owinServiceMock "application/json" UnitTests.appconfigasstring 
+        owinServiceMock "application/json" TestValues.appconfigasstring |> parseApplicationSettings
 
     let initializeWithMock = initialize mockedconfig
     //
-    let settings = initializeWithMock "armonia" "tasks"
-    Assert.AreEqual("http://tasks.armonia.kidocloud.com/", settings.Scope)         
-    Assert.AreEqual("https://armonia.kidocloud.com/auth/v1/WRAPv0.9", settings.AuthEndpoint)
-    Assert.AreEqual("https://kido-armonia.accesscontrol.windows.net/", settings.ServiceScope)
+    let settings = initializeWithMock "armonia" "tasks" |> Async.RunSynchronously
+    match settings with 
+        | Application app -> 
+            Assert.AreEqual("http://tasks.armonia.kidocloud.com/", app.Scope)         
+            Assert.AreEqual("https://armonia.kidocloud.com/auth/v1/WRAPv0.9", app.AuthEndpoint)
+            Assert.AreEqual("https://kido-armonia.accesscontrol.windows.net/", app.ServiceScope)
+        | _ -> Assert.Fail()
 
 
 let [<Test>] ``should get token for MarketPlace`` () = 
@@ -43,53 +45,42 @@ let [<Test>] ``should get token for MarketPlace`` () =
     let credentials =  { name = "christian"; secret = "pass"}
     let tokenRequest = createTokenRequest  "armonia" credentials
     let mockedtokenrequest tokenrequest =
-        owinServiceMock "application/json" UnitTests.wrapv9tokenasstring 
+        owinServiceMock "application/json" TestValues.wrapv9tokenasstring 
 
     let authenticateWithMock = authenticate mockedtokenrequest
     // 
-    let token = authenticateWithMock tokenRequest
-    Assert.AreEqual(token.Expires,"2000")
+    let token = authenticateWithMock tokenRequest |> Async.RunSynchronously
+    match token with
+    |  t -> Assert.NotNull(t)
+    | _ -> Assert.Fail()
 
 let [<Test>] ``should get token for Application`` () = 
      //mock
     let credentials =  { name = "christian"; secret = "pass"}
     let tokenRequest = createTokenRequest  "armonia" credentials |> forApplication "tasks"
     let mockedtokenrequest tokenrequest =
-        owinServiceMock "application/json" UnitTests.wrapv9tokenasstring 
+        owinServiceMock "application/json" TestValues.wrapv9tokenasstring 
 
     let authenticateWithMock = authenticate mockedtokenrequest
     // 
-    let token = authenticateWithMock tokenRequest
-    Assert.AreEqual(token.Expires,"2000")
+    let token = authenticateWithMock tokenRequest |> Async.RunSynchronously
+    match token with
+    |  t -> Assert.NotNull(t)
+    | _ -> Assert.Fail()
 
 let [<Test>] ``should get token for Application using Provider`` () = 
      //mock
     let credentials =  { name = "christian"; secret = "pass"}
     let tokenRequest = createTokenRequest  "armonia" credentials |> forApplication "tasks" |> usingProvider "x"
     let mockedtokenrequest tokenrequest =
-        owinServiceMock "application/json" UnitTests.wrapv9tokenasstring 
+        owinServiceMock "application/json" TestValues.wrapv9tokenasstring 
 
     let authenticateWithMock = authenticate mockedtokenrequest
     
     // 
-    let token = authenticateWithMock tokenRequest
-    Assert.AreEqual(token.Expires,"2000")
+    let token = authenticateWithMock tokenRequest |> Async.RunSynchronously
+    match token with
+    |  t -> Assert.NotNull(t)
+    | _ -> Assert.Fail()
 
-
-let [<Test>] `` should invoke service`` () =
-     //mock
-    let credentials =  { name = "christian"; secret = "pass"}
-    let tokenRequest = createTokenRequest  "armonia" credentials |> forApplication "tasks" |> usingProvider "x"
-    let getmockedtoken tokenRequest =
-        wrapv9tokenasstring 
-    let authenticateWithMock = authenticate getmockedtoken
-    // 
-    let user = authenticateWithMock tokenRequest
-    let apiRequest = createEapiRequest user  "my_rest_service" 
-    let invokeSvcMock  apiRequest =
-         owinServiceMock "application/json" UnitTests.serviceresponse_asstring
-    let invokeWithMock =  invokeEApi invokeSvcMock
-    // =>
-    let apiResponse = invokeWithMock apiRequest
-    Assert.AreEqual(200,apiResponse.Status);
 
