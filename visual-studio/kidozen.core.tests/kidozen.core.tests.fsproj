@@ -4,14 +4,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>C63B573B-E37D-45A3-8242-6E730543D441</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>kidozen.core.tests</RootNamespace>
     <AssemblyName>kidozen.core.tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <Name>kidozen.core.tests</Name>
-    <ProductVersion>12.0.0</ProductVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -49,6 +47,7 @@
     <Compile Include="..\..\sources\kidozen.core.tests\Integration.fs">
       <Link>Integration.fs</Link>
     </Compile>
+    <Compile Include="ContosoIntegration.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FSharp.Data">
@@ -68,18 +67,14 @@
     </Reference>
     <Reference Include="Microsoft.Owin">
       <HintPath>..\packages\Microsoft.Owin.3.0.0-alpha1\lib\net45\Microsoft.Owin.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Owin.Hosting">
       <HintPath>..\packages\Microsoft.Owin.Hosting.3.0.0-alpha1\lib\net45\Microsoft.Owin.Hosting.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Owin.Testing">
       <HintPath>..\packages\Microsoft.Owin.Testing.3.0.0-alpha1\lib\net45\Microsoft.Owin.Testing.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="mscorlib" />
-    <Reference Include="FSharp.Core, Version=4.3.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
     <Reference Include="nunit.framework">
       <HintPath>..\..\libs\nunit.framework.dll</HintPath>
     </Reference>
@@ -104,14 +99,14 @@
     </Reference>
     <ProjectReference Include="..\CSharpUtilities\CSharpUtilities.csproj">
       <Name>CSharpUtilities</Name>
-      <Project>{3d1382a2-2d1a-496f-9626-52f5810e99b8}</Project>
-      <Private>True</Private>
+      <Project>{3D1382A2-2D1A-496F-9626-52F5810E99B8}</Project>
     </ProjectReference>
     <ProjectReference Include="..\kidozen.core\kidozen.core.fsproj">
       <Name>kidozen.core</Name>
       <Project>E2F4847C-62A1-42FD-8B93-6339F1A30CF2</Project>
     </ProjectReference>
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="FSharp.Core" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
