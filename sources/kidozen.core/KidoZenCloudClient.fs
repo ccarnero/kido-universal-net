@@ -75,4 +75,11 @@ let callService (apiRequest:EapiRequest) =
         |> withBody apiRequest.Body.Value
         |> getResponseBody  |> parseServiceResponse
 
+let invokeDataSource (apiRequest:EapiRequest) =
+    let ep = List.find (fun i -> i.Service.Equals("datasource") ) apiRequest.Application.Services
+    let url = ep.Endpoint + "/" + apiRequest.Name + "/invoke/" + apiRequest.Method
+    createRequest Post url 
+        |> withHeader (Authorization apiRequest.User.Token) 
+        |> withBody apiRequest.Body.Value
+        |> getResponseBody  |> parseServiceResponse
     

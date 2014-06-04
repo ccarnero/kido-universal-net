@@ -39,8 +39,7 @@ let getUserAndApp =
 let [<Test>] ``should invoke service with user and application`` () =
     ServicePointManager.ServerCertificateValidationCallback  <- (fun _ _ _ _  -> true);
     let userforapp = getUserAndApp
-
-    let apiRequest = createEapiRequest userforapp.App userforapp.Usr "Wheather" "get" |> withJsonBody "{\"path\":\"?q=buenos aires,ar\"}"
+    let apiRequest = createEapiRequest userforapp.App userforapp.Usr "Weather" "get" |> withJsonBody "{\"path\":\"?q=buenos aires,ar\"}"
     let apiResponse = invokeEApi callService apiRequest |> Async.RunSynchronously
     match apiResponse with
     | EApiResponse r ->
