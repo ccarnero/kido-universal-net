@@ -47,7 +47,9 @@
     <Compile Include="..\..\sources\kidozen.core.tests\Integration.fs">
       <Link>Integration.fs</Link>
     </Compile>
-    <Compile Include="ContosoIntegration.fs" />
+    <Compile Include="..\..\sources\kidozen.core.tests\ContosoIntegration.fs">
+      <Link>ContosoIntegration.fs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FSharp.Data">
