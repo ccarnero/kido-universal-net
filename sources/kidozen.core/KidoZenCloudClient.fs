@@ -66,20 +66,16 @@ let getKidoZenToken (tokenRequest:TokenRequest) =
             Success (getMarketPlaceToken tokenRequest)
     with | :?System.Exception as ex ->
         Error ex    
-        
-let callService (apiRequest:EapiRequest) =
-    let ep = List.find (fun i -> i.Service.Equals("service") ) apiRequest.Application.Services
-    let url = ep.Endpoint + "/" + apiRequest.Name + "/invoke/" + apiRequest.Method
-    createRequest Post url 
-        |> withHeader (Authorization apiRequest.User.Token) 
-        |> withBody apiRequest.Body.Value
-        |> getResponseBody  |> parseServiceResponse
 
-let invokeDataSource (apiRequest:EapiRequest) =
-    let ep = List.find (fun i -> i.Service.Equals("datasource") ) apiRequest.Application.Services
-    let url = ep.Endpoint + "/" + apiRequest.Name + "/invoke/" + apiRequest.Method
+type CallServiceResult =
+    | StatusCode of int
+    | Error of System.Exception 
+            
+let callService (apiRequest:EapiRequest) =
+    let url = apiRequest.BaseEndpoint + "/" + apiRequest.Name + "/invoke/" + apiRequest.Method
     createRequest Post url 
-        |> withHeader (Authorization apiRequest.User.Token) 
-        |> withBody apiRequest.Body.Value
-        |> getResponseBody  |> parseServiceResponse
+                |> withHeader (Authorization apiRequest.Token) 
+                |> withBody apiRequest.Body.Value
+                |> getResponseBody 
+                |> parseServiceResponse
     

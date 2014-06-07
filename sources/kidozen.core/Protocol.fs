@@ -58,7 +58,7 @@ let usingProvider name request = {
     request with Provider = Some (name)
 }
 // kidozen
-type KidoUser = {
+type KidoToken = {
     Token: string;      
     Expires: string
 }
@@ -74,17 +74,17 @@ type EApiResponse =  {
 }
 
 type EapiRequest = {
-    User : KidoUser
+    BaseEndpoint : string
     Name : string
     Method : string
-    Application : Application
+    Token : string
     Body : string option
     Options : string option
 }
 
-let createEapiRequest application user apiname apimethod = {
-    User = user;
-    Application = application;
+let createEapiRequest baseEndpoint token apiname apimethod = {
+    BaseEndpoint = baseEndpoint;
+    Token = token;
     Name = apiname;
     Method = apimethod;
     Body = None;

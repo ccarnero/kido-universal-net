@@ -9,7 +9,7 @@ exception ApplicationParseException of string
 
 type TypesParserResult =
     | Application of Application
-    | KidoUser of KidoUser
+    | KidoToken of KidoToken
     | Fail of System.Exception 
 
 let parseApplicationSettings value =
@@ -43,11 +43,11 @@ let parseApplicationSettings value =
 let parseUserToken value = 
     try
         let config = JsonValue.Parse value 
-        let user = { 
+        let token = { 
             Token = config?rawToken.AsString() ; 
             Expires = config?expirationTime.AsString()
         }
-        KidoUser user
+        KidoToken token
     with | :?System.Exception as ex ->
         Fail ex
 

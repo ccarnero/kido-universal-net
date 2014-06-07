@@ -38,18 +38,18 @@
     <None Include="packages.config" />
     <None Include="app.config" />
     <Compile Include="values.fs" />
-    <Compile Include="..\..\sources\kidozen.core.tests\unit.fs">
-      <Link>unit.fs</Link>
-    </Compile>
-    <Compile Include="..\..\sources\kidozen.core.tests\mock.fs">
-      <Link>mock.fs</Link>
-    </Compile>
-    <Compile Include="..\..\sources\kidozen.core.tests\Integration.fs">
-      <Link>Integration.fs</Link>
-    </Compile>
     <Compile Include="..\..\sources\kidozen.core.tests\ContosoIntegration.fs">
       <Link>ContosoIntegration.fs</Link>
     </Compile>
+    <None Include="..\..\sources\kidozen.core.tests\Integration.fs">
+      <Link>Integration.fs</Link>
+    </None>
+    <None Include="..\..\sources\kidozen.core.tests\unit.fs">
+      <Link>unit.fs</Link>
+    </None>
+    <None Include="..\..\sources\kidozen.core.tests\mock.fs">
+      <Link>mock.fs</Link>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FSharp.Data">
